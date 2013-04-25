@@ -2,7 +2,7 @@ default['selenium']['chromedriver']['directory']
 
 case node["os"]
 when "linux"
-  default['selenium']['chromedriver']['directory'] = "/usr/local"
+  default['selenium']['chromedriver']['directory'] = "/usr/local/bin"
   case node["kernel"]["machine"]
   when "x86_64"
     default["selenium"]["chromedriver"]["url"] = "https://chromedriver.googlecode.com/files/chromedriver2_linux64_0.8.zip"

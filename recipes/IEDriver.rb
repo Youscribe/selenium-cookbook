@@ -22,22 +22,6 @@ unless node["platform"] == "windows"
   return
 end
 
-remote_file "IEDriver" do
-  source node['selenium']['IEDriver']['url']
-  path "#{Chef::Config[:file_cache_path]}/IEDriver.zip"
-  notifies :run, "service[Extract zip]"
-end
+include_recipe "chocolatey"
 
-chef_gem "rubyzip"
-
-directory 'C:\selenium'
-
-ruby_block "Extract zip" do
-  block do
-    require 'zip/zip'
-    Zip::ZipFile.extract("#{Chef::Config[:file_cache_path]}/IEDriver.zip",'C:\selenium')
-  end
-  action :nothing
-end
-
-windows_path 'C:\selenium'
+chocolatey "IEDriverServer"

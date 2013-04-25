@@ -18,22 +18,15 @@
 # limitations under the License.
 #
 
-remote_file "chromedriver" do
-  source node['selenium']['chromedriver']['url']
-  path "#{Chef::Config[:file_cache_path]}/chromedriver.zip"
-  notifies :run, "service[Extract zip]"
-end
-
-chef_gem "rubyzip"
-
-directory node['selenium']['chromedriver']['directory']
-
-ruby_block "Extract zip" do
-  block do
-    require 'zip/zip'
-    Zip::ZipFile.extract("#{Chef::Config[:file_cache_path]}/chromedriver.zip", node['selenium']['chromedriver']['directory'])
+unless node['platform'] == "windows"
+  ark "chromedriver" do
+    url node['selenium']['chromedriver']['url']
+    path node['selenium']['chromedriver']['directory']
+    creates "chromedriver"
+    action :cherry_pick
   end
-  action :nothing
-end
+else
+  include_recipe "chocolatey"
 
-windows_path node['selenium']['chromedriver']['directory'] if node['plateform'] == "windows"
+  chocolatey "ChromeDriver2"
+end
