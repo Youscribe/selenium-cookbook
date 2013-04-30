@@ -19,6 +19,7 @@
 #
 
 unless node['platform'] == "windows"
+  include_recipe "ark"
   ark "chromedriver" do
     url node['selenium']['chromedriver']['url']
     path node['selenium']['chromedriver']['directory']
@@ -27,6 +28,5 @@ unless node['platform'] == "windows"
   end
 else
   include_recipe "chocolatey"
-
   chocolatey "ChromeDriver2"
 end
