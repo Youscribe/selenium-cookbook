@@ -18,7 +18,10 @@
 # limitations under the License.
 #
 
-unless node['platform'] == "windows"
+if node['platform_family'] == "windows"
+  include_recipe "chocolatey"
+  chocolatey "ChromeDriver2"
+else
   include_recipe "ark"
   ark "chromedriver" do
     url node['selenium']['chromedriver']['url']
@@ -26,7 +29,4 @@ unless node['platform'] == "windows"
     creates "chromedriver"
     action :cherry_pick
   end
-else
-  include_recipe "chocolatey"
-  chocolatey "ChromeDriver2"
 end
